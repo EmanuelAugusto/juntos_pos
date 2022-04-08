@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  api_juntos:
+    container_name: "api_juntos"
+    image: node:16
+    build: 
+      context: ./api_juntos
+      target: "develop-stage"
+    command: /bin/sh -c "yarn && yarn run dev"
+    ports:
+      - 4001:4001
+    volumes:
+      - ./api_juntos:/api_juntos
+    working_dir: /api_juntos
+  database:
+    container_name: juntos_database
+    image: mysql:5.7
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: juntos
+      MYSQL_USER: juntos
+      MYSQL_PASSWORD: juntos
+    volumes:
+      - ./mysql/:/var/lib/mysql/
