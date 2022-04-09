@@ -25,7 +25,13 @@ const EditOng = async (req, res) => {
   try {
     const Ong = req.body;
 
-    delete Ong.password;
+    if (Ong.password) {
+      Ong.password = Bcrypt.hashSync(Ong.password, 10);
+    } else {
+      delete Ong.password;
+    }
+
+    delete Ong.codigo;
 
     const result = await OngModel.update(
       {
@@ -50,7 +56,9 @@ const EditOng = async (req, res) => {
 
 const GetOng = async (req, res) => {
   try {
-    const result = await OngModel.findByPk(req.params.id);
+    const result = await OngModel.findByPk(req.params.id, {
+      attributes: { exclude: ["password"] },
+    });
 
     if (!result) {
       res.status(404).json({

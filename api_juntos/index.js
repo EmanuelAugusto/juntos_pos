@@ -3,14 +3,15 @@ import Routes from "./src/Routes/Routes.js";
 import DotEnv from "dotenv";
 import Db from "./src/Database/Database.js";
 import ModelsSync from "./src/Database/ModelsSync.js"
+import Cors from "cors"
 
 DotEnv.config();
 
 const App = Express();
 
+App.use(Cors());
 App.use(Express.json());
 App.use(Routes);
-
 
 const RunApp = async () => {
   try {

@@ -17,7 +17,7 @@ const OngModel = Database.define(
     cnpj: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: 'cnpj',
     },
     logradouro: {
       type: DataTypes.STRING,

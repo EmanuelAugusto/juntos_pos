@@ -13,6 +13,14 @@ services:
     volumes:
       - ./api_juntos:/api_juntos
     working_dir: /api_juntos
+  front_juntos:
+    container_name: "front_juntos"
+    build: ./front_juntos
+    volumes: 
+      - ./front_juntos:/front_juntos
+    ports:
+      - 8080:8080
+    command: /bin/sh -c "yarn && quasar dev"
   database:
     container_name: juntos_database
     image: mysql:5.7
