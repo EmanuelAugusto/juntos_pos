@@ -1,33 +1,66 @@
 <template>
-  <q-page class="q-pa-md">
-    <div class="col-md-8 q-gutter-sm q-ml-sm">
-      <q-btn label="Nova ONG" icon="add" @click="openModalNewOng()"></q-btn>
-      <q-btn label="Atualizar" icon="update" @click="GetOngs"></q-btn>
+  <q-page class="q-pa-md row">
+    <div class="col-md-12 q-gutter-sm q-ml-sm q-mb-md">
+      <q-btn
+        label="Nova ONG"
+        color="indigo-5"
+        icon="add"
+        @click="openModalNewOng()"
+      ></q-btn>
+      <q-btn
+        label="Atualizar"
+        color="indigo-5"
+        icon="update"
+        @click="GetOngs"
+      ></q-btn>
     </div>
-    <div class="col-md-8">
-      <q-card
-        v-for="(on, key) in ongs"
-        :key="key"
-        class="q-ma-sm bg-blue-grey-1 text-dark"
-      >
-        <q-card-section>
-          <div class="text-h6">Razão social: {{ on.razao_social }}</div>
-          <div class="text-subtitle2">Cnpj: {{ on.cnpj }}</div>
-        </q-card-section>
+    <transition
+      v-if="!loading"
+      appear
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
+    >
+      <div class="col-md-12 flex justify-center">
+        <!-- Wrapping only one DOM element, defined by QBtn -->
 
-        <q-card-actions>
-          <q-btn flat class="full-width" @click="openModalNewOng(on.codigo)"
-            >Detalhes</q-btn
-          >
-        </q-card-actions>
-      </q-card>
+        <q-card
+          v-for="(on, key) in ongs"
+          :key="key"
+          style="min-width: 500px"
+          flat
+          bordered
+          class="q-ma-sm col-auto text-dark"
+        >
+          <q-card-section>
+            <div class="text-h6">Razão social: {{ on.razao_social }}</div>
+            <div class="text-subtitle2">Cnpj: {{ on.cnpj }}</div>
+          </q-card-section>
+          <q-card-section>
+            <div class="q-mt-none">
+              {{ GetState(on.estado) }} - {{ on.cidade }}
+            </div>
+          </q-card-section>
+
+          <q-card-actions>
+            <q-btn
+               color="indigo-5"
+              class="full-width"
+              @click="openModalNewOng(on.codigo)"
+              >Detalhes</q-btn
+            >
+          </q-card-actions>
+        </q-card>
+      </div>
+    </transition>
+    <div v-if="loading" class="col-md-12 flex justify-center">
+      <q-spinner-oval color="indigo-5" size="4em" />
     </div>
     <NewOngDialog />
   </q-page>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 import { useStore } from "vuex";
 import { computed } from "vue";
 import NewOngDialog from "../components/NewOngDialog.vue";
@@ -41,14 +74,18 @@ export default defineComponent({
   setup() {
     const { dispatch, state, commit } = useStore();
 
+    const loading = ref(true);
+
+    const StatesUF = computed(() => state.OngStore.statesUF);
+
     async function GetOngs() {
       try {
-        Loading.show();
+        loading.value = true;
         await dispatch("OngStore/ActionGetOngs");
-        Loading.hide();
+        loading.value = false;
       } catch (error) {
         Notify.create("Erro ao recuperar ONG's");
-        Loading.hide();
+        loading.value = false;
         return error;
       }
     }
@@ -62,10 +99,17 @@ export default defineComponent({
       });
     }
 
+    function GetState(estado) {
+      const { label } = StatesUF.value.find((sF) => sF.value === estado);
+      return label;
+    }
+
     GetOngs();
 
     return {
       GetOngs,
+      loading,
+      GetState,
       openModalNewOng,
       ongs: computed(() => state.OngStore.ongs),
     };

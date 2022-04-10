@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar class="bg-orange-9">
+      <q-toolbar class="bg-indigo">
         <q-toolbar-title class="text-weight-bolder">
           Juntos
         </q-toolbar-title>

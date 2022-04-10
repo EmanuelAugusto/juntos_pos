@@ -21,7 +21,13 @@
           @click="DeleteOng"
         />
       </q-card-section>
-      <q-form @submit.prevent="SaveOng">
+      <q-form
+        autocorrect="off"
+        autocapitalize="off"
+        autocomplete="off"
+        spellcheck="false"
+        @submit.prevent="SaveOng"
+      >
         <q-card-section class="q-pt-none">
           <div class="q-gutter-md">
             <q-input v-model="formData.razao_social" label="Razão Social" />
@@ -98,7 +104,7 @@
 
         <q-card-actions align="right">
           <q-btn outline label="cancelar" color="red" v-close-popup />
-          <q-btn label="Salvar ong" color="orange-9" type="submit" />
+          <q-btn label="Salvar ong" color="indigo-5" type="submit" />
         </q-card-actions>
       </q-form>
     </q-card>
