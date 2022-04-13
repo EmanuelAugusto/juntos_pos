@@ -26,7 +26,7 @@
         <q-card
           v-for="(on, key) in ongs"
           :key="key"
-          style="min-width: 500px"
+          style="min-width: 500px; max-height: 200px"
           flat
           bordered
           class="q-ma-sm col-auto text-dark"
@@ -43,7 +43,7 @@
 
           <q-card-actions>
             <q-btn
-               color="indigo-5"
+              color="indigo-5"
               class="full-width"
               @click="openModalNewOng(on.codigo)"
               >Detalhes</q-btn
