@@ -39,10 +39,10 @@
 <script>
 import { defineComponent, ref, computed } from "vue";
 import { useStore } from "vuex";
+import { Notify } from "quasar";
 import NewOngDialog from "../components/NewOngDialog.vue";
 import CardOngs from "../components/CardOngs.vue";
 import Loading from "../components/Loading.vue";
-import { Notify } from "quasar";
 
 export default defineComponent({
   name: "PageIndex",
